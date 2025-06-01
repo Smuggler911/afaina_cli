@@ -1,17 +1,20 @@
-import { useState } from "react"
+
 import { Chat } from "../../widgets/chat"
 import chatIcon from "../../assets/hinduism-god-svgrepo-com.svg"
 import "./mainPage.css"
-export const MainPage = () =>{
-    const [isOpend,SetIsOpened] = useState(false);
+import { useChat } from "../../context/context"
 
+export const MainPage = () =>{
+    const chatIsOpen= useChat();
+    const openChat = chatIsOpen?.openChat;
+    
     return (
         <>
         {
-            isOpend? 
+          chatIsOpen?.chatIsOpen?
             <Chat/> 
             : 
-            <div onClick={()=>SetIsOpened(true)} className="chatbot_icon">
+            <div onClick={openChat} className="chatbot_icon">
                 <img src={chatIcon}/>
             </div>
         }
