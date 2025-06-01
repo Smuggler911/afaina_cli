@@ -65,8 +65,15 @@ export const Chat: React.FC =()=>{
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(val)
-        }).then(resp=>resp.json());
-        const msg:Answer =response.message;
+        });
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error("Server returned error:", errorText);
+            return;
+        }
+
+        const json = await response.json();
+        const msg: Answer = json.message;
 
         SetSend(true);
 
