@@ -60,6 +60,14 @@ export const Chat: React.FC =()=>{
         setText('');
         SetSend(true);
 
+        const typingMessage: Message = {
+            id: Date.now() + 1,
+            text: '...',
+            sender: 'bot',
+        };
+
+        setMessages(prev => [...prev, typingMessage]);
+
         const response = await fetch("/send", {
             method: "POST",
             headers: {
@@ -76,18 +84,15 @@ export const Chat: React.FC =()=>{
         const json = await response.json();
         const msg: Answer = json.message;
 
+        setMessages(prev => [
+            ...prev.slice(0, -1),
+            {
+                id: Date.now() + 2,
+                text: msg.content,
+                sender: 'bot',
+            }
+        ]);
 
-
-        const botResponse: Message = {
-            id: Date.now() + 1,
-            text:msg.content,
-            sender: 'bot',
-        };
-
-        setTimeout(() => {
-            setMessages(prev => [...Object.values(prev), botResponse]);
-        }, 1000);
-        
      
     };
 
