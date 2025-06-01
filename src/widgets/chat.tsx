@@ -62,11 +62,10 @@ export const Chat: React.FC =()=>{
 
         const typingMessage: Message = {
             id: Date.now() + 1,
-            text: '...',
-            sender: 'bot',
+            text: "...",
+            sender: "bot",
         };
-
-        setMessages(prev => [...prev, typingMessage]);
+        setMessages((prev) => [...prev, typingMessage]);
 
         const response = await fetch("/send", {
             method: "POST",
@@ -84,19 +83,26 @@ export const Chat: React.FC =()=>{
         const json = await response.json();
         const msg: Answer = json.message;
 
-        setMessages(prev => [
+
+
+        setMessages((prev) => [
             ...prev.slice(0, -1),
             {
-                id: Date.now() + 2,
+                id: Date.now() + 3,
                 text: msg.content,
-                sender: 'bot',
-            }
+                sender: "bot",
+            },
         ]);
-
      
     };
 
-
+    const TypingIndicator = () => (
+        <div className="typing-indicator">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    );
 
     (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (event.key === 'Enter') {
@@ -117,16 +123,19 @@ export const Chat: React.FC =()=>{
     const closeChat = chatCtx?.closeChat;
 
 
-    function displMessage(){
-        if(isSend){
-            return(
-                messages.map(msg => (
-                    <div className="msg_buble" id ={msg.sender}>
-                        <p className="buble_text" >{msg.text}</p>
-                    </div>
-                ))
-            )
+    function displMessage() {
+        if (isSend) {
+            return messages.map((msg) => (
+                <div className="msg_buble" id={msg.sender} key={msg.id}>
+                    {msg.text === "..." ? (
+                        <TypingIndicator />
+                    ) : (
+                        <p className="buble_text">{msg.text}</p>
+                    )}
+                </div>
+            ));
         }
+        return null;
     }
 
     return (
