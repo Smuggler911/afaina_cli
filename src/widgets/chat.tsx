@@ -58,6 +58,7 @@ export const Chat: React.FC =()=>{
         setMessages(prev => [...Object.values(prev), newMessage]);
 
         setText('');
+        SetSend(true);
 
         const response = await fetch("/send", {
             method: "POST",
@@ -75,7 +76,6 @@ export const Chat: React.FC =()=>{
         const json = await response.json();
         const msg: Answer = json.message;
 
-        SetSend(true);
 
 
         const botResponse: Message = {
